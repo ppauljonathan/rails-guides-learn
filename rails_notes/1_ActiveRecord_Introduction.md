@@ -1,5 +1,5 @@
 # ActiveRecord
--> Model
+## Model
     -> business data which requires persistent storage
     +
     -> behavior which the data should exhibit
@@ -28,6 +28,7 @@
  
  # Creating ActiveRecord Models
   (references products table) 
+  ```ruby
   class Product < ApplicationRecord
     self.table_name = 'other_table_name' # overrides tablename
     # products table =>
@@ -40,40 +41,43 @@
   end
   
   ApplicationRecord inherits from ActiveRecord::Base
-  
+```
   
 # CRUD
-  -C
+  ```ruby
+  #C
     user = User.create(name: 'Dave', occupation: 'Coder')
     create = new + save
     
-  -R
+  #R
     User.all, User.first, User.last
     User.find_by(name: 'David')
     User.where(name: 'David').order_by(created_at: :desc)
     
-  -U
+  #U
     User.find_by(name: 'David').update(name: 'Dave')
     User.update_all "SQL STRING"
     
-  -D
+  #D
     User.find_by(...).destroy
     User.destroy_by(...)
     User.destory_all
-    
+  ```
 # Covered In Depth Later
  - Validations
+  ``` ruby
   class User < ApplicationRecord
     validates :name, presence: true
   end
   
   # save -> returns false if validation fails
   # save! -> throws error if validation fails
-  
+  ```
  - Callbacks
  
  - Migrations
  DSL for defining tables
+  ```ruby
     class CreatePublications < ActiveRecord::Migration[7.0]
       def change
         create_table :publications do |t|
@@ -87,7 +91,4 @@
         end
       end
     end
-    
-
-
-
+  ```

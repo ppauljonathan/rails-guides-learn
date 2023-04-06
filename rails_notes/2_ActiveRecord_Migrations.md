@@ -1,5 +1,6 @@
 # Migrations - alter db schema over time in a consistent way
 
+```ruby
   class CreateProducts < ActiveRecord::Migration[7.0]
     def change
       create_table :products do |t|
@@ -10,85 +11,99 @@
       end
     end
   end
+```
 
-
-  id -> PK, created automatically
-  name -> string
-  description -> text
-  timestamps -> created_at, updated_at
+  - id -> PK, created automatically
+  - name -> string
+  - description -> text
+  - timestamps -> created_at, updated_at
   
-  when $ rails db:migrate is run, table is made and db changes are made, $ rails db:rollback rolls back the current migration
+  when `$ rails db:migrate` is run, table is made and db changes are made, `$ rails db:rollback` rolls back the current migration
   
   migrations are wrapped with transactions in dbs that support this
   
   if a migration cannot be rolled back we define it through the following methods
   
   1. using reversible
-    class ChangeProductsPrice < ActiveRecord::Migration[7.0]
-      def change
-        reversible do |dir|
-          change_table :products do |t|
-            dir.up   { t.change :price, :string }
-            dir.down { t.change :price, :integer }
-          end
-        end
+  
+```ruby
+class ChangeProductsPrice < ActiveRecord::Migration[7.0]
+  def change
+    reversible do |dir|
+      change_table :products do |t|
+        dir.up   { t.change :price, :string }
+        dir.down { t.change :price, :integer }
       end
     end
+  end
+end
+```
 
   2. using up and down methods
-  
-    class ChangeProductsPrice < ActiveRecord::Migration[7.0]
-      def up
-        change_table :products do |t|
-          t.change :price, :string
-        end
-      end
-
-      def down
-        change_table :products do |t|
-          t.change :price, :integer
-        end
+```ruby
+  class ChangeProductsPrice < ActiveRecord::Migration[7.0]
+    def up
+      change_table :products do |t|
+        t.change :price, :string
       end
     end
+
+    def down
+      change_table :products do |t|
+        t.change :price, :integer
+      end
+    end
+  end
+```
 
 
 # Creating migrations
 
-we can create migrations using rails generator, the format for a migration is YYYYMMDDHHMMSS_create_products.rb
+we can create migrations using rails generator, the format for a migration is `YYYYMMDDHHMMSS_create_products.rb`
 
 we can create it by running:
-$ (bin/)rails g(enerate) migration [MigrationName]
+`$ (bin/)rails g(enerate) migration [MigrationName]`
 
-ex: $ rails g migration AddPartNumberToProducts
+ex: `$ rails g migration AddPartNumberToProducts`
+```ruby
 class AddPartNumberToProducts < ActiveRecord::Migration[7.0]
   def change
   end
 end
+```
 
 if format is AddXXToTableName and we follow with some c1:d1 c2:d2 ...
 the migration will be generated with
+```ruby
   add_column :table_name, :c1, :d1
   add_column :table_name, :c2, :d2
   .
   .
   .
+```
 inside the change method
 
-$ bin/rails generate migration AddPartNumberToProducts part_number:string
+`$ bin/rails generate migration AddPartNumberToProducts part_number:string`
+
+```ruby
 class AddPartNumberToProducts < ActiveRecord::Migration[7.0]
   def change
     add_column :products, :part_number, :string
   end
 end
+```
 
 we can also add other propertes to the column 
-$ bin/rails generate migration AddPartNumberToProducts part_number:string:index
+`$ bin/rails generate migration AddPartNumberToProducts part_number:string:index`
+
+```ruby
 class AddPartNumberToProducts < ActiveRecord::Migration[7.0]
   def change
     add_column :products, :part_number, :string
     add_index :products, :part_number
   end
 end
+```
 
 removing a column
 $ bin/rails generate migration RemovePartNumberFromProducts part_number:string
