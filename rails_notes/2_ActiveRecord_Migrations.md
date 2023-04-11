@@ -13,10 +13,10 @@
   end
 ```
 
-  - id -> PK, created automatically
-  - name -> string
-  - description -> text
-  - timestamps -> created_at, updated_at
+- id -> PK, created automatically
+- name -> string
+- description -> text
+- timestamps -> created_at, updated_at
   
   when `$ rails db:migrate` is run, table is made and db changes are made, `$ rails db:rollback` rolls back the current migration
   
@@ -24,7 +24,7 @@
   
   if a migration cannot be rolled back we define it through the following methods
   
-  1. using reversible
+- using `reversible`
   
 ```ruby
 class ChangeProductsPrice < ActiveRecord::Migration[7.0]
@@ -39,7 +39,8 @@ class ChangeProductsPrice < ActiveRecord::Migration[7.0]
 end
 ```
 
-  2. using up and down methods
+- using `up` and `down` methods
+
 ```ruby
   class ChangeProductsPrice < ActiveRecord::Migration[7.0]
     def up
@@ -56,8 +57,7 @@ end
   end
 ```
 
-
-# Creating migrations
+## Creating migrations
 
 we can create migrations using rails generator, the format for a migration is `YYYYMMDDHHMMSS_create_products.rb`
 
@@ -65,6 +65,7 @@ we can create it by running:
 `$ (bin/)rails g(enerate) migration [MigrationName]`
 
 ex: `$ rails g migration AddPartNumberToProducts`
+
 ```ruby
 class AddPartNumberToProducts < ActiveRecord::Migration[7.0]
   def change
@@ -74,13 +75,16 @@ end
 
 if format is AddXXToTableName and we follow with some c1:d1 c2:d2 ...
 the migration will be generated with
+
 ```ruby
   add_column :table_name, :c1, :d1
   add_column :table_name, :c2, :d2
   .
   .
   .
+
 ```
+
 inside the change method
 
 `$ bin/rails generate migration AddPartNumberToProducts part_number:string`
@@ -93,7 +97,7 @@ class AddPartNumberToProducts < ActiveRecord::Migration[7.0]
 end
 ```
 
-we can also add other propertes to the column 
+we can also add other propertes to the column
 `$ bin/rails generate migration AddPartNumberToProducts part_number:string:index`
 
 ```ruby
@@ -108,7 +112,7 @@ end
 removing a column
 
 ```bash
-$ bin/rails generate migration RemovePartNumberFromProducts part_number:string
+bin/rails generate migration RemovePartNumberFromProducts part_number:string
 ```
 
 ```ruby
@@ -122,7 +126,7 @@ end
 creating a table, we use
 
 ```bash
-$ rails g migration CreateTableName c1:d1 c2:d2 ...
+rails g migration CreateTableName c1:d1 c2:d2 ...
 ```
 
 ```ruby
@@ -142,8 +146,9 @@ end
 all migrations generated can be modified
 
 references can be added to a table like so
+
 ```bash
-$ rails g migration AddTab1RefToTab2 tab1:references
+rails g migration AddTab1RefToTab2 tab1:references
 ```
 
 ```ruby
@@ -157,8 +162,9 @@ end
 ```
 
 we can also make join tables which are different from joins, they represent the associations between customer and product
+
 ```bash
-$ bin/rails generate migration CreateJoinTableCustomerProduct customer product
+bin/rails generate migration CreateJoinTableCustomerProduct customer product
 ```
 
 ```ruby
@@ -176,10 +182,10 @@ end
 the join table is created in lexical order of the first 2 arguments to `create_join_table`
 ex: `create_join_table :people, :cars` #=> creates a table called `:cars_people`
 
-# model generators
+## model generators
 
 ```bash
-$ bin/rails generate model Product name:string description:text
+bin/rails generate model Product name:string description:text
 ```
 
 makes a migration like so:
@@ -198,8 +204,9 @@ end
 ```
 
 we can also pass modifiers to the migration definintion
+
 ```bash
-$ bin/rails generate migration AddDetailsToProducts 'price:decimal{5,2}' supplier:references{polymorphic}
+bin/rails generate migration AddDetailsToProducts 'price:decimal{5,2}' supplier:references{polymorphic}
 ```
 
 which gives:
@@ -213,7 +220,7 @@ class AddDetailsToProducts < ActiveRecord::Migration[7.0]
 end
 ```
 
-# writing migrations
+## writing migrations
 
 ## creating a table
 
@@ -300,13 +307,13 @@ The `change` method is the primary way of writing migrations. It works for the m
 
 `remove_column` is reversible if you supply the `column_type` as the third argument. Provide the original column options too, otherwise Rails can't recreate the column exactly when rolling back:
 
-```ruby    
+```ruby
   remove_column :posts, :slug, :string, null: false, default: ''
 ```
 
 If you're going to need to use any other methods, you should use `reversible` or write the `up` and `down` methods instead of using the `change` method.
 
-# Using `reversible`
+## Using `reversible`
 
 Complex migrations may require processing that Active Record doesn't know how to reverse. You can use reversible to specify what to do when running a migration and what else to do when reverting it. For example:
 
@@ -339,12 +346,12 @@ class ExampleMigration < ActiveRecord::Migration[7.0]
   end
 end
 ```
+
 Using `reversible` will ensure that the instructions are executed in the right order too. If the previous example migration is reverted, the `down` block will be run after the `home_page_url` column is removed and right before the table distributors is dropped.
 
 Sometimes your migration will do something which is just plain irreversible; for example, it might destroy some data. In such cases, you can raise `ActiveRecord::IrreversibleMigration` in your down block. If someone tries to revert your migration, an error message will be displayed saying that it can't be done.
 
-
-# Using the `up` and `down` Methods
+## Using the `up` and `down` Methods
 
 You can also use the old style of migration using `up` and `down` methods instead of the `change` method. The `up` method should describe the transformation you'd like to make to your schema, and the `down` method of your migration should revert the transformations done by the `up` method. In other words, the database schema should be unchanged if you do an `up` followed by a `down`. For example, if you create a table in the `up` method, you should drop it in the `down` method. It is wise to perform the transformations in precisely the reverse order they were made in the `up` method. The example in the `reversible` section is equivalent to:
 
@@ -398,32 +405,32 @@ class FixupExampleMigration < ActiveRecord::Migration[7.0]
 end
 ```
 
-# Running Migrations
+## Running Migrations
 
 ```bash
-$ bin/rails db:migrate VERSION=20080906120000 to run that partcular timestamped migration
+bin/rails db:migrate VERSION=20080906120000 to run that partcular timestamped migration
 
 # rollback
-$ bin/rails db:rollback
+bin/rails db:rollback
 
 # can add step also
-$ bin/rails db:rollback STEP=3
+bin/rails db:rollback STEP=3
 
 # redo rollsback migrations and executes them again (can also define step)
 
-$ bin/rails db:redo STEP=3
+bin/rails db:redo STEP=3
 ```
 
-
-# Setup the Database
+## Setup the Database
 
 The `bin/rails db:setup` command will create the database, load the schema, and initialize it with the seed data.
 
 The `bin/rails db:reset` command will drop the database and set it up again. This is functionally equivalent to bin/rails db:drop db:setup.
 
-# running a specific migration
+## running a specific migration
+
 ```bash
-$ bin/rails db:migrate:up VERSION=20080906120000
+bin/rails db:migrate:up VERSION=20080906120000
 ```
 
 If you want Active Record to not output anything, then running `bin/rails db:migrate
@@ -463,7 +470,7 @@ end
 
 output:
 
-```
+```bash
 ==  CreateProducts: migrating =================================================
 -- Created a table
    -> and an index!
