@@ -171,6 +171,7 @@ These callbacks are given in the order in which they are called by rails
     ```
 
 ## 4 Running Callbacks
+
 The following methods trigger callbacks:
 
 - `create`
@@ -201,11 +202,13 @@ Additionally, the `after_find` callback is triggered by the following finder met
 - `last`
 
 The `after_initialize` callback is triggered every time a new object of the class is initialized.
+
 - NOTE
   
    The `find_by_*` and `find_by_*!` methods are dynamic finders generated automatically for every attribute.
 
 ## 5 Skipping Callbacks
+
 Just as with validations, it is also possible to skip callbacks by using the following methods:
 
 - `decrement!`
@@ -230,6 +233,7 @@ Just as with validations, it is also possible to skip callbacks by using the fol
 These methods should be used with caution, however, because important business rules and application logic may be kept in callbacks. Bypassing them without understanding the potential implications may lead to invalid data.
 
 ## 6 Halting Execution
+
 As you start registering new callbacks for your models, they will be queued for execution. This queue will include all your model's validations, the registered callbacks, and the database operation to be executed.
 
 The whole callback chain is wrapped in a transaction. If any callback raises an exception, the execution chain gets halted and a ROLLBACK is issued. To intentionally stop a chain use:
@@ -243,6 +247,7 @@ throw :abort
   Any exception that is not `ActiveRecord::Rollback` or `ActiveRecord::RecordInvalid` will be re-raised by Rails after the callback chain is halted. Raising an exception other than `ActiveRecord::Rollback` or `ActiveRecord::RecordInvalid` may break code that does not expect methods like `save` and `update` (which normally try to return `true` or `false`) to raise an exception.
 
 ## 7 Relational Callbacks
+
 callbacks can even work on relationships, and can even be defined by a relation
 
 Let us say that an User has many Articles, the User's Articles should also be destroyed if it is destroyed
@@ -270,8 +275,11 @@ irb> user.destroy
 Article destroyed
 => #<User id: 1>
 ```
+
 ## 8 Conditional Callbacks
+
 we can aslo apply conditions on when to call callback methods using `:if` and `:unless` options, which can take a `Symbol`, `Proc`, or `Array`
+
 ### `:if` and `:unless` with `Symbol`
 
 ```ruby
@@ -304,7 +312,9 @@ class Comment < ApplicationRecord
     unless: Proc.new { author.trusted? }
 end
 ```
+
 ### multiple conditions
+
 both `:if` and `:unless` can accept an `Array` of `Symbols` and/or `Procs`
 
 ```ruby
@@ -315,6 +325,7 @@ end
 ```
 
 ## 9 Callback Classes
+
 Sometimes the callback methods that you'll write will be useful enough to be reused by other models. Active Record makes it possible to create classes that encapsulate the callback methods, so they can be reused.
 
 Here's an example where we create a class with an `after_destroy` callback for a `PictureFile` model:
@@ -448,3 +459,16 @@ end
   irb> @user.save # updating @user
   User was saved to database
   ```
+
+## session notes
+
+we can give multiple callbacks in the same hook method
+
+```ruby
+before_validation :a, :b, :c
+before_validation :d
+```
+
+this executes in the order `:a`, `:b`, `:c`, `:d`
+
+`skip_callback`

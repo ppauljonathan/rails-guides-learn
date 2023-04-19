@@ -13,8 +13,10 @@
 ActiveRecord::Schema[7.0].define(version: 2023_04_03_081343) do
   create_table "books", force: :cascade do |t|
     t.string "name"
+    t.integer "library_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["library_id"], name: "index_books_on_library_id"
   end
 
   create_table "cars", force: :cascade do |t|
@@ -48,6 +50,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_081343) do
   end
 
   create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "part_number"
@@ -72,5 +76,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_081343) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "books", "libraries"
   add_foreign_key "products", "users"
 end

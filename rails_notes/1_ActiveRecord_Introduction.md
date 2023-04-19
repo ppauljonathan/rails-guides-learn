@@ -2,9 +2,11 @@
 
 ## Model
 
-    -> business data which requires persistent storage
-    +
-    -> behavior which the data should exhibit
+  ```text
+  -> business data which requires persistent storage
+  +
+  -> behavior which the data should exhibit
+  ```
 
 ## ORM (Object Relational Mapping)
 
