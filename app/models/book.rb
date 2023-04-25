@@ -1,3 +1,3 @@
 class Book < ApplicationRecord
-  belongs_to :library
+  validates :name, length: { minimum: 3 }, uniqueness: true
 end
