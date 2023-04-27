@@ -10,13 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_03_081343) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_27_084023) do
   create_table "accounts", force: :cascade do |t|
     t.string "name"
     t.integer "supplier_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["supplier_id"], name: "index_accounts_on_supplier_id"
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "name"
+    t.integer "person_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_addresses_on_person_id"
   end
 
   create_table "appointments", force: :cascade do |t|
@@ -63,9 +71,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_081343) do
 
   create_table "people", force: :cascade do |t|
     t.string "name"
-    t.string "email"
-    t.index ["email"], name: "unique_emails", unique: true
-    t.index ["name"], name: "index_people_on_name"
+    t.integer "age"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "phycisians", force: :cascade do |t|
@@ -107,6 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_081343) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "addresses", "people"
   add_foreign_key "novels", "authors"
   add_foreign_key "products", "users"
 end

@@ -766,6 +766,8 @@ the following options are supported
 
     If you set the `:autosave` option to `true`, Rails will save any loaded association members and destroy members that are marked for destruction whenever you save the parent object. Setting `:autosave` to `false` is **not** the same as not setting the `:autosave` option. If the `:autosave` option is not present, then new associated objects will be saved, but updated associated objects will not be saved.
 
+    when an objects `_destroy` key is set to true the `marked_for_destruction?` method will return true
+
 - `:class_name`
 
     If the name of the other model cannot be derived from the association name, you can use the `:class_name` option to supply the model name. For example, if a book belongs to an author, but the actual name of the model containing authors is `Patron`, you'd set things up this way:
@@ -1040,6 +1042,8 @@ the following options are supported
 - `:autosave`
 
     If you set the :`autosave` option to `true`, Rails will save any loaded association members and destroy members that are marked for destruction whenever you save the parent object. Setting `:autosave` to `false` is **not** the same as not setting the `:autosave` option. If the `:autosave` option is not present, then new associated objects will be saved, but updated associated objects will not be saved.
+
+    when an objects `_destroy` key is set to true the `marked_for_destruction?` method will return true
 
 - `:class_name`
 
@@ -1343,6 +1347,8 @@ there are 17 methods:
 - `:autosave`
 
   If you set the `:autosave` option to `true`, Rails will save any loaded association members and destroy members that are marked for destruction whenever you save the parent object. Setting `:autosave` to `false` is **not** the same as not setting the `:autosave` option. If the `:autosave` option is not present, then new associated objects will be saved, but updated associated objects will not be saved.
+
+  when an objects `_destroy` key is set to true the `marked_for_destruction?` method will return true
 
 - `:class_name`
 

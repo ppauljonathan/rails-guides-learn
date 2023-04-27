@@ -1,0 +1,77 @@
+<%# <%= form_with model: book do |form|%>
+<%#   <%= form.label :name %>
+<%#   <%= form.text_field :name, value: book.name%>
+<%#   <br>
+<%# 
+<%#   <%# <%= fields_for :isbn, book.isbn do |isbn_form| %>
+<%#   <%#   <%= isbn_form.label :isbn, 'ISBN' %>
+<%#   <%#   <%= isbn_form.text_field :isbn %>
+<%#   <%# <% end %>
+<%# 
+<%#   <%= form.label :isbn, 'ISBN' %>
+<%#   <%= form.text_field :isbn, value: book.isbn %>
+<%#   <br>
+<%#   <%= form.label :price %>
+<%#   <%= form.number_field :price, step: 0.01 %>
+<%#   <br>
+<%# 
+<%#   <%= form.label :city %>
+<%#   <%# <%= form.select :city, ["Berlin", "Chicago", "Madrid"] %>
+<%#   <%# <%= form.select :city, [["Berlin", "BE"], ["Chicago", "CHI"], ["Madrid", "MD"]] %>
+<%#   <%# <%= form.select :city, [["Berlin", "BE"], ["Chicago", "CHI"], ["Madrid", "MD"]], selected: 'CHI' %>
+<%#   <%# <%= form.select :city,
+<%#       {
+<%#         "Europe" => [ ["Berlin", "BE"], ["Madrid", "MD"] ],
+<%#         "North America" => [ ["Chicago", "CHI"] ],
+<%#       },
+<%#       selected: "CHI" %>
+<%#   
+<%#   <%# <%= form.time_zone_select :time_zone %>
+<%# 
+<%#   <%# <%= form.date_select :created_at %>
+<%#   <%# <%= select_year 2000, prefix: 'party' %>
+<%# 
+<%#   <%# <%= form.collection_check_boxes :id, Book.order(:name), :id, :name %>
+<%# 
+<%#   <%= form.file_field :picture %>
+<%# 
+<%#   <br>
+<%# 
+<%#   <% if book.id %>
+<%#     <%= form.submit "Delete", formmethod: :delete, data: { turbo_confirm: "Are you sure?" } %>
+<%#   <% end %>
+<%#   <%= form.button %>
+<%# <% end %>
+
+<%# <%= form_with url: '/books', method: :post, model: book do |form| %>
+<%#   <%= form.collection_select :book_id, Book.order(:name), :id, :name %>
+<%# 
+<%#   <%= form.submit %>
+<%# <% end %>
+
+
+<%# <%= form_with builder: SomeTextFormBuilder, url: '/books/', method: :post do |form| %>
+<%#   <%= form.text_field %> <br>
+<%#   <%= form.collection_radio_buttons :letters, ['a', 'b', 'c'], :length, :size %> <br>
+<%#   <%= form.submit %>
+<%# <% end %>
+
+<%= form_with url: '/books/', method: :post do |form| %>
+  <input name="person[addresses][][][line1][][][][l2]" type="text"/>
+  <%= form.submit %>
+<% end %>
+
+<%= form_with model: book do |form|%>
+  <%= form.label :name %>
+  <%= form.text_field :name, value: book.name%>
+  <br>
+  <%= fields_for :isbn, book.isbn do |isbn_form| %>
+    <%= isbn_form.label :isbn, 'ISBN' %>
+    <%= isbn_form.text_field :isbn %>
+  <% end %>
+  <br>
+  <%= form.label :price %>
+  <%= form.number_field :price, step: 0.01 %>
+  <br>
+  <%= form.submit  %>
+<% end %>
